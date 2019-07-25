@@ -95,8 +95,8 @@ $(document).ready(function() {
   });
 
   $("#artBtn").on("click", function() {
-    var artInput = ;
-    artists.push(artInput);
+    var artInput = $("#formInput");
+    artists.push(artInput.val().trim());
     buttonCreate();
   });
 });
