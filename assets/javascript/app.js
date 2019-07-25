@@ -11,33 +11,57 @@
 $(document).ready(function() {
   //variables
   //Artists array
-  var artists = "coolio";
+  var artists = [
+    "Coolio",
+    "Taylor Swift",
+    "Kanye",
+    "Lady Gaga",
+    "Katy Perry",
+    "Nirvana",
+    "Nicki Minaj",
+    "Flock of Seaguls",
+    "Beyonce",
+    "The Black Keys",
+    "Weezer"
+  ];
 
   //API keys
   var bandAPI = "eb1552eb-9dea-4af7-b57e-efceb15cc39e";
   var gifyAPI = "BlgbDHXopyhvnQ1BXVu7szoDw8gwuUSy";
 
-  //Query URLS for API's
-  var bandsQueryURL =
-    "https://rest.bandsintown.com/artists/" +
-    artists +
-    "?app_id=" +
-    bandAPI +
-    "";
-
-  var gifyQueryURL =
-    "https://api.giphy.com/v1/gifs/search?q=" +
-    artists +
-    "&api_key=" +
-    gifyAPI +
-    "&limit=5";
-
   //Functions
+  //for loop to create the buttons in the array
+  function buttonCreate() {
+    for (var j = 0; j < artists.length; j++) {
+      var buttons = $("<button>" + artists[j] + "</>");
+      buttons.attr("class", "artButton");
+      buttons.attr("data-artist", artists[j]);
+      buttons.attr("value", artists[j]);
 
+      $("#buttonSpot").append(buttons);
+    }
+  }
+  buttonCreate();
   //Event Listeners
 
   //Clicking the button for the artists to make populate the gifs
-  $("#artistButton").on("click", function() {
+  $("button").on("click", function() {
+    var band = $(this).attr("data-artist");
+
+    //Query URLS for API's
+    var bandsQueryURL =
+      "https://rest.bandsintown.com/artists/" +
+      band +
+      "?app_id=" +
+      bandAPI +
+      "";
+    var gifyQueryURL =
+      "https://api.giphy.com/v1/gifs/search?q=" +
+      band +
+      "&api_key=" +
+      gifyAPI +
+      "&limit=5&rating=PG";
+
     $.ajax({
       url: gifyQueryURL,
       method: "GET"
@@ -45,15 +69,34 @@ $(document).ready(function() {
       console.log(gif);
       var gifReturn = gif.data;
       for (var i = 0; i < gifReturn.length; i++) {
+        var p = $("<p>").text("Rating: " + gifReturn[i].rating);
+
+        var gifDiv = $("<div>");
+        gifDiv.attr("class", "card");
+        gifDiv.attr("style", "width: 18rem");
+
+        var cardBody = $("<div>");
+        cardBody.attr("class", "card-body");
+        cardBody.append(p);
+
         var gifURL = gifReturn[i].images.fixed_height.url;
 
-        console.log(i);
         var artistImage = $("<img>");
+        artistImage.attr("class", "card-img-top");
         artistImage.attr("src", gifURL);
         artistImage.attr("alt", "artist image");
 
-        $("#gif").append(artistImage);
+        gifDiv.append(artistImage);
+        gifDiv.append(cardBody);
+
+        $("#gif").prepend(gifDiv);
       }
     });
+  });
+
+  $("#artBtn").on("click", function() {
+    var artInput = ;
+    artists.push(artInput);
+    buttonCreate();
   });
 });

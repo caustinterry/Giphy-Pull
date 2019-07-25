@@ -20,8 +20,25 @@
     </nav>
 
     <div class="container">
-      <button id="artistButton">Artist</button>
-      <div id="gif"></div>
+      <form>
+        <div class="row">
+          <div class="col-8">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Add An Artist"
+            />
+          </div>
+          <div class="col-4">
+            <button type="submit" class="btn btn-dark mb-2" id="artBtn">
+              Submit
+            </button>
+          </div>
+        </div>
+      </form>
+      <div id="buttonSpot"></div>
+      <!-- <button id="artistButton">Artist</button> -->
+      <div class="card-columns" id="gif"></div>
     </div>
     <script src="assets/javascript/app.js"></script>
   </body>

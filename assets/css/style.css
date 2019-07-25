@@ -1,4 +1,6 @@
-button {
-  background-color: rgb(81, 64, 235);
+.artButton {
+  background-color: #5140eb;
   color: white;
+  margin: 5px;
+  border-radius: 0.25rem;
 }
