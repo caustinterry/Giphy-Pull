@@ -32,20 +32,36 @@ $(document).ready(function() {
   //Functions
   //for loop to create the buttons in the array
   function buttonCreate() {
+    $("#buttonSpot").empty();
     for (var j = 0; j < artists.length; j++) {
-      var buttons = $("<button>" + artists[j] + "</>");
+      var buttons = $("<button class='button'>");
       buttons.attr("class", "artButton");
       buttons.attr("data-artist", artists[j]);
       buttons.attr("value", artists[j]);
+      buttons.text(artists[j]);
 
       $("#buttonSpot").append(buttons);
     }
   }
-  buttonCreate();
-  //Event Listeners
+
+  function addBand() {
+    $("#artBtn").on("click", function() {
+      var artInput = $("#formInput")
+        .val()
+        .trim();
+      if (artInput === "") {
+        return false;
+      }
+
+      artists.push(artInput);
+      buttonCreate();
+      event.preventDefault();
+    });
+  }
 
   //Clicking the button for the artists to make populate the gifs
-  $("button").on("click", function() {
+  function gifRuns() {
+    console.log("test");
     var band = $(this).attr("data-artist");
 
     //Query URLS for API's
@@ -60,31 +76,36 @@ $(document).ready(function() {
       band +
       "&api_key=" +
       gifyAPI +
-      "&limit=5&rating=PG";
+      "&limit=10&rating=PG";
 
     $.ajax({
       url: gifyQueryURL,
       method: "GET"
-    }).then(function(gif) {
-      console.log(gif);
-      var gifReturn = gif.data;
+    }).then(function(response) {
+      console.log(response);
+      $("#gif").empty();
+      var gifReturn = response.data;
       for (var i = 0; i < gifReturn.length; i++) {
-        var p = $("<p>").text("Rating: " + gifReturn[i].rating);
+        var p = $("<p>").text("Rating: " + gifReturn[i].rating); //pulls rating of gif and adds it to <p>
 
-        var gifDiv = $("<div>");
+        var gifDiv = $("<div>"); //create div to put the gif into
         gifDiv.attr("class", "card");
         gifDiv.attr("style", "width: 18rem");
 
-        var cardBody = $("<div>");
+        var cardBody = $("<div>"); //create div for body content of card
         cardBody.attr("class", "card-body");
         cardBody.append(p);
 
-        var gifURL = gifReturn[i].images.fixed_height.url;
+        var gifStillURL = gifReturn[i].images.fixed_width_still.url;
+        var gifAnimateURL = gifReturn[i].images.fixed_width.url;
 
         var artistImage = $("<img>");
-        artistImage.attr("class", "card-img-top");
-        artistImage.attr("src", gifURL);
+        artistImage.attr("class", "card-img-top giphy");
+        artistImage.attr("src", gifStillURL);
         artistImage.attr("alt", "artist image");
+        artistImage.attr("data-still", gifStillURL);
+        artistImage.attr("data-animate", gifAnimateURL);
+        artistImage.attr("data-state", "still");
 
         gifDiv.append(artistImage);
         gifDiv.append(cardBody);
@@ -92,11 +113,23 @@ $(document).ready(function() {
         $("#gif").prepend(gifDiv);
       }
     });
-  });
+  }
+  //function to animate the gifs
+  function animation() {
+    var state = $(this).attr("data-state");
+    if (state === "still") {
+      $(this).attr("src", $(this).attr("data-animate"));
+      $(this).attr("data-state", "animate");
+    } else {
+      $(this).attr("src", $(this).attr("data-still"));
+      $(this).attr("data-state", "still");
+    }
+  }
 
-  $("#artBtn").on("click", function() {
-    var artInput = $("#formInput");
-    artists.push(artInput.val().trim());
-    buttonCreate();
-  });
+  buttonCreate();
+  addBand();
+
+  //Event Listeners
+  $(document).on("click", ".artButton", gifRuns);
+  $(document).on("mouseenter mouseleave", ".giphy", animation);
 });
