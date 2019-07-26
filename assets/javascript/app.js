@@ -18,11 +18,20 @@ $(document).ready(function() {
     "Lady Gaga",
     "Katy Perry",
     "Nirvana",
+    "Tupac",
+    "The Beatles",
     "Nicki Minaj",
     "Flock of Seaguls",
     "Beyonce",
     "The Black Keys",
-    "Weezer"
+    "Weezer",
+    "Psy",
+    "Notorious B.I.G",
+    "David Bowie",
+    "Rod Stewart",
+    "Justin Bieber",
+    "Elton John",
+    "Phil Collins"
   ];
 
   //API keys
@@ -43,7 +52,7 @@ $(document).ready(function() {
       $("#buttonSpot").append(buttons);
     }
   }
-
+  //function to create the musician from the input bar
   function addBand() {
     $("#artBtn").on("click", function() {
       var artInput = $("#formInput")
@@ -76,7 +85,7 @@ $(document).ready(function() {
       band +
       "&api_key=" +
       gifyAPI +
-      "&limit=10&rating=PG";
+      "&limit=12&rating=PG";
 
     $.ajax({
       url: gifyQueryURL,
@@ -130,6 +139,8 @@ $(document).ready(function() {
   addBand();
 
   //Event Listeners
+  //click listener for the musician gifs to populate
   $(document).on("click", ".artButton", gifRuns);
+  //gifs will animate when hovered over instead of clicking
   $(document).on("mouseenter mouseleave", ".giphy", animation);
 });
