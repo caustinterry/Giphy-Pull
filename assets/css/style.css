@@ -1,6 +1,23 @@
 .artButton {
-  background-color: #5140eb;
-  color: white;
+  background-color: #c7c7c7;
+  color: black;
   margin: 5px;
   border-radius: 0.25rem;
+}
+
+.jumbotron {
+  background-image: url("https://wyliecenter.com/assets/img/masthead/concert.jpg");
+  background-repeat: no-repeat;
+  color: white;
+  background-position: center;
+  background-color: black;
+  margin-top: 2rem;
+}
+
+body {
+  background-color: black;
+}
+
+h1 {
+  text-align: center;
 }
